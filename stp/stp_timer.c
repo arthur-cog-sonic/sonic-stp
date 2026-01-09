@@ -17,8 +17,11 @@
 #include "stp_inc.h"
 
 
-//get time in secs
-uint32_t sys_get_seconds()
+/*
+ * Y2K38 Fix: Changed return type from uint32_t to uint64_t to prevent
+ * timestamp overflow on January 19, 2038.
+ */
+uint64_t sys_get_seconds()
 {
     struct timespec ts = {0,0};
     if (-1 == clock_gettime(CLOCK_MONOTONIC, &ts))
@@ -26,10 +29,10 @@ uint32_t sys_get_seconds()
         STP_LOG_CRITICAL("clock_gettime Failed : %s",strerror(errno));
         sys_assert(0);
     }
-    return ts.tv_sec;
+    return (uint64_t)ts.tv_sec;
 }
 
-void start_timer(TIMER *timer, UINT32 value)
+void start_timer(TIMER *timer, UINT64 value)
 {
 	timer->active = true;
 	timer->value = value;
@@ -41,7 +44,7 @@ void stop_timer(TIMER *timer)
 	timer->value = 0;
 }
 
-bool timer_expired(TIMER *timer, UINT32 timer_limit)
+bool timer_expired(TIMER *timer, UINT64 timer_limit)
 {
 	if (timer->active)
 	{
@@ -61,7 +64,7 @@ bool is_timer_active(TIMER *timer)
 	return ((timer->active) ? true : false);
 }
 
-bool get_timer_value(TIMER *timer, UINT32 *value_in_ticks)
+bool get_timer_value(TIMER *timer, UINT64 *value_in_ticks)
 {
 	if (!timer->active)
 		return false;

@@ -694,8 +694,8 @@ typedef struct
 	// port hello timer
 	UINT16                  helloWhen;
 
-	// Last Timer Expiry ticks
-	UINT32                  last_expiry_time;
+	/* Y2K38 Fix: Changed from UINT32 to UINT64 for timestamp safety */
+	UINT64                  last_expiry_time;
 	uint64_t                last_bpdu_rx_time;
 
 	// port migration state machine state

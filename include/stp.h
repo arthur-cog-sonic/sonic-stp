@@ -231,7 +231,8 @@ typedef struct
 	BRIDGE_IDENTIFIER bridge_id;
 
 	UINT32 topology_change_count;
-	UINT32 topology_change_tick; // time of last tc event
+	/* Y2K38 Fix: Changed from UINT32 to UINT64 for timestamp safety */
+	UINT64 topology_change_tick; // time of last tc event
 
 	UINT8 hold_time : 6;
 	UINT8 topology_change_detected : 1;
@@ -268,8 +269,9 @@ typedef struct
 	TIMER hello_timer;
 	TIMER tcn_timer;
 	TIMER topology_change_timer;
-	UINT32 last_expiry_time;  /* for RAS to log delay events */
-	UINT32 last_bpdu_rx_time; /* for RAS to log Rx delay events */
+	/* Y2K38 Fix: Changed from UINT32 to UINT64 for timestamp safety */
+	UINT64 last_expiry_time;  /* for RAS to log delay events */
+	UINT64 last_bpdu_rx_time; /* for RAS to log Rx delay events */
 	UINT32 rx_drop_bpdu;
 
 #define STP_CLASS_MEMBER_VLAN_BIT 0
