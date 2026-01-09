@@ -39,7 +39,8 @@ typedef struct {
     uint8_t forward_delay;
     uint8_t hold_time;
 
-    uint32_t topology_change_time; // time of last tc event
+    /* Y2K38 Fix: Changed from uint32_t to uint64_t for timestamp safety */
+    uint64_t topology_change_time; // time of last tc event
     uint32_t topology_change_count;
 
     char root_bridge_id[STP_SYNC_BRIDGE_ID_LEN];
@@ -70,7 +71,8 @@ typedef struct {
     uint32_t rx_config_bpdu;
     uint32_t tx_tcn_bpdu;
     uint32_t rx_tcn_bpdu;
-    uint32_t root_protect_timer;
+    /* Y2K38 Fix: Changed from uint32_t to uint64_t for timestamp safety */
+    uint64_t root_protect_timer;
 
     uint8_t clear_stats;
     uint32_t modified_fields;

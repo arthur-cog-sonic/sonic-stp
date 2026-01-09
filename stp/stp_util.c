@@ -761,8 +761,9 @@ void stputil_process_bpdu(STP_INDEX stp_index, PORT_ID port_number, void *buffer
 {
 	STP_CONFIG_BPDU *bpdu = (STP_CONFIG_BPDU *) buffer;
 	STP_CLASS *stp_class = GET_STP_CLASS(stp_index);
-	UINT32 last_bpdu_rx_time = 0;
-	UINT32 current_time = 0;
+	/* Y2K38 Fix: Changed from UINT32 to UINT64 for timestamp safety */
+	UINT64 last_bpdu_rx_time = 0;
+	UINT64 current_time = 0;
 
 	// disable fast span on this port
 	if(STP_IS_FASTSPAN_ENABLED(port_number))
@@ -786,7 +787,7 @@ void stputil_process_bpdu(STP_INDEX stp_index, PORT_ID port_number, void *buffer
 	if (current_time < last_bpdu_rx_time)
 	{
 		last_bpdu_rx_time = last_bpdu_rx_time - current_time - 1; 
-		current_time = (UINT32) -1;
+		current_time = (UINT64) -1;
 	}
 
 	if (((current_time - last_bpdu_rx_time) > (stp_class->bridge_info.hello_time + 1))

@@ -31,19 +31,24 @@
  * - For an example routine, look at the comment at the end of this file
  */
 
+/*
+ * Y2K38 Fix: Changed TIMER value from UINT32 to UINT64 to prevent
+ * timestamp overflow on January 19, 2038. The 32-bit value would
+ * overflow at 2^31-1 seconds (2147483647 = 2038-01-19 03:14:07 UTC).
+ */
 typedef struct TIMER
 {
 	UINT32 active;
-	UINT32 value;
-} __attribute__((aligned(4))) TIMER;
+	UINT64 value;
+} __attribute__((aligned(8))) TIMER;
 
-uint32_t sys_get_seconds();
+uint64_t sys_get_seconds();
 /*
  * start_timer()
  *		this function initializes the timer to the input start_value_in_ticks
  *		and marks it as an active timer.
  */
-void start_timer(TIMER *timer, UINT32 start_value_in_ticks);
+void start_timer(TIMER *timer, UINT64 start_value_in_ticks);
 
 /*
  * stop_timer()
@@ -60,7 +65,7 @@ void stop_timer(TIMER *timer);
  *		  timer_limit_in_ticks. if it exceeds or equal to the limit, stops the
  *		  timer and returns TRUE, other wise returns FALSE
  */
-bool timer_expired(TIMER *timer, UINT32 timer_limit_in_ticks);
+bool timer_expired(TIMER *timer, UINT64 timer_limit_in_ticks);
 
 /*
  * is_timer_active()
@@ -73,7 +78,7 @@ bool is_timer_active(TIMER *timer);
  *		fills in the the current value of the timer in ticks, return FALSE
  *		if the timer is inactive.
  */
-bool get_timer_value(TIMER *timer, UINT32 *value_in_ticks);
+bool get_timer_value(TIMER *timer, UINT64 *value_in_ticks);
 
 /* USAGE EXAMPLE
  * ---------------------------------------------------------------------------

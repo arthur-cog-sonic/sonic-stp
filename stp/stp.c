@@ -680,8 +680,9 @@ void received_tcn_bpdu(STP_CLASS *stp_class, PORT_ID port_number, STP_TCN_BPDU *
 /* 8.7.3 */
 void hello_timer_expiry(STP_CLASS *stp_class)
 {
-	UINT32 last_expiry_time = 0;
-	UINT32 current_time = 0;
+	/* Y2K38 Fix: Changed from UINT32 to UINT64 for timestamp safety */
+	UINT64 last_expiry_time = 0;
+	UINT64 current_time = 0;
 
 	last_expiry_time = stp_class->last_expiry_time;
 	current_time = sys_get_seconds();
@@ -690,7 +691,7 @@ void hello_timer_expiry(STP_CLASS *stp_class)
 	if (current_time < last_expiry_time)
 	{
 		last_expiry_time = last_expiry_time - current_time - 1; 
-		current_time = (UINT32) -1;
+		current_time = (UINT64) -1;
 	}
 
 	if (((current_time - last_expiry_time) > (stp_class->bridge_info.hello_time + 1))
