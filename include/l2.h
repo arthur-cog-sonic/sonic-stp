@@ -19,6 +19,8 @@
  #define UINT16 uint16_t
  #undef UINT32
  #define UINT32 uint32_t
+ #undef UINT64
+ #define UINT64 uint64_t
  #undef UINT
  #define UINT unsigned int
  #undef INT32

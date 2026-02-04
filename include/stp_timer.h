@@ -37,7 +37,7 @@ typedef struct TIMER
 	UINT32 value;
 } __attribute__((aligned(4))) TIMER;
 
-uint32_t sys_get_seconds();
+uint64_t sys_get_seconds();
 /*
  * start_timer()
  *		this function initializes the timer to the input start_value_in_ticks

@@ -17,8 +17,8 @@
 #include "stp_inc.h"
 
 
-//get time in secs
-uint32_t sys_get_seconds()
+//get time in secs (Y2038-safe: returns 64-bit value)
+uint64_t sys_get_seconds()
 {
     struct timespec ts = {0,0};
     if (-1 == clock_gettime(CLOCK_MONOTONIC, &ts))
@@ -26,7 +26,7 @@ uint32_t sys_get_seconds()
         STP_LOG_CRITICAL("clock_gettime Failed : %s",strerror(errno));
         sys_assert(0);
     }
-    return ts.tv_sec;
+    return (uint64_t)ts.tv_sec;
 }
 
 void start_timer(TIMER *timer, UINT32 value)

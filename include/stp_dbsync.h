@@ -39,7 +39,7 @@ typedef struct {
     uint8_t forward_delay;
     uint8_t hold_time;
 
-    uint32_t topology_change_time; // time of last tc event
+    uint64_t topology_change_time; // time of last tc event (Y2038-safe)
     uint32_t topology_change_count;
 
     char root_bridge_id[STP_SYNC_BRIDGE_ID_LEN];
