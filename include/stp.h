@@ -231,7 +231,7 @@ typedef struct
 	BRIDGE_IDENTIFIER bridge_id;
 
 	UINT32 topology_change_count;
-	UINT32 topology_change_tick; // time of last tc event
+	UINT64 topology_change_tick; // time of last tc event (Y2038-safe)
 
 	UINT8 hold_time : 6;
 	UINT8 topology_change_detected : 1;
