@@ -116,13 +116,14 @@ void test_topology_change_tick_y2038(void)
 /* Test sys_get_seconds return type is 64-bit */
 void test_sys_get_seconds_return_type(void)
 {
-    /* Verify the return type is 64-bit by checking size */
-    TEST_ASSERT(sizeof(uint64_t) == 8, "sys_get_seconds return type is 64-bit");
-    
-    /* Note: We can't actually call sys_get_seconds() in this unit test
-     * because it depends on clock_gettime which requires linking with -lrt
-     * and the full STP infrastructure. The type check above verifies the fix.
+    /* Compile-time check that sys_get_seconds returns a 64-bit type.
+     * sizeof() is evaluated at compile time and doesn't actually call the function,
+     * so this works even without linking to -lrt.
      */
+    _Static_assert(sizeof(sys_get_seconds()) == 8,
+                   "sys_get_seconds must return 64-bit type");
+    
+    TEST_ASSERT(1, "sys_get_seconds return type is 64-bit (verified at compile time)");
 }
 
 /* Test timestamp arithmetic doesn't overflow */
